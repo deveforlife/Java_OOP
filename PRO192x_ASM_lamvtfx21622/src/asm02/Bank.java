@@ -111,6 +111,8 @@ public class Bank {
     public ArrayList searchCustomerByName(String keyword) {
         ArrayList<Integer> result = new ArrayList<>();
         String checkKeyword;
+
+        // Có thể sử dụng hàm String.constans để tìm kiếm theo ký tự
         for (int i = 0; i < customers.size(); i++) {
             checkKeyword = customers.get(i).getName().substring(customers.get(i).getName().length()
                     - keyword.length());
