@@ -37,25 +37,17 @@ public class Customer extends User {
         return totalBalance;
     }
 
-    public void addAccount(Account newAcount) {
-        double accountBalance = -1;
+    //nhập số dư
+    public boolean inputamount(double amount) {
+        if (amount >= 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-        // Kiểm tra số dư được nhập vào có đúng hay không?
-        do {
-            try {
-                System.out.print("Nhập số dư: ");
-                accountBalance = sc.nextDouble();
-                if (accountBalance >= 0) {
-                    newAcount.setBalance(accountBalance);
-                } else {
-                    System.out.println("Dữ liệu không đúng. Vui lòng nhập lại!");
-                }
-            } catch (InputMismatchException ime) {
-                System.out.println("Dữ liệu không đúng. Vui lòng nhập lại!");
-                sc.nextLine();
-                accountBalance = -1;
-            }
-        } while (accountBalance < 0);
+    public void addAccount(Account newAcount, double amount) {
+        newAcount.setBalance(amount);
         accounts.add(newAcount);
     }
 

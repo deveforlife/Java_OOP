@@ -4,6 +4,9 @@ public class User {
     private String name;
     private String customerId;
 
+    public User() {
+    }
+
     public String getName() {
         return name;
     }

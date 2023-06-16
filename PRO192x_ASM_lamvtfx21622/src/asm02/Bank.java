@@ -84,7 +84,20 @@ public class Bank {
             System.out.println("Số tài khoản " + newAccount.getAccountNumber() + " đã tồn tại! " +
                     "Vui lòng chọn số tài khoản khác");
         } else {
-            customers.get(indexOfCus).addAccount(newAccount);
+            try {
+                System.out.print("Nhập số dư: ");
+                double amount = sc.nextDouble();
+                sc.nextLine();
+                if(customers.get(indexOfCus).inputamount(amount)){
+                    customers.get(indexOfCus).addAccount(newAccount, amount);
+                    System.out.println("Tạo tài khoản thành công!");
+                }
+                else System.out.println("Vui lòng nhập số dư lớn hơn hoặc bằng 0");
+            }
+            catch (InputMismatchException ime){
+                System.out.println("Vui lòng nhập ký tự số");
+                sc.nextLine();
+            }
         }
     }
 

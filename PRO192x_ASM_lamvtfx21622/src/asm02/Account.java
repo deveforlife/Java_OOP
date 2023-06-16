@@ -6,16 +6,13 @@ import java.util.Locale;
 public class Account {
     private String accountNumber;
     private double balance;
-
     public Account() {
     }
 
     @Override
     public String toString() {
-        Locale vietnam = new Locale("vi", "VN");
-        NumberFormat currencyVN = NumberFormat.getCurrencyInstance(vietnam);
-        String soDu = currencyVN.format(getBalance());
-        return getAccountNumber() + "    |                               " + soDu + "\n";
+        return getAccountNumber() + "    |                               " +
+                formatCurrency(getBalance()) + "\n";
     }
 
     public String getAccountNumber() {
@@ -40,5 +37,11 @@ public class Account {
         } else {
             return false;
         }
+    }
+
+    protected String formatCurrency (double currency){
+        Locale vietnam = new Locale("vi", "VN");
+        NumberFormat currencyVN = NumberFormat.getCurrencyInstance(vietnam);
+        return currencyVN.format(currency);
     }
 }
