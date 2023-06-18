@@ -16,7 +16,7 @@ public class MenuAs3 {
     private static final String customer_name = "Hoang Lan";
 
     public void showMenu() {
-        activeBank.addCustomer(customer_name,customer_ID);
+        activeBank.addCustomer(customer_name, customer_ID);
         System.out.println("+-------------+----------------------------------------+-------------+");
         System.out.println("|   NGAN HANG SO    |   fx21622@v3.0.0                               |");
         mainMenu();
@@ -37,21 +37,11 @@ public class MenuAs3 {
             try {
                 selection = sc.nextInt();
                 String accNum;
-//                int index = activeBank.findIndexOfCusId(customer_ID);
                 switch (selection) {
                     case 1:
                         System.out.println("Chức năng 1: Thông tin khách hàng");
                         String inputCCCD = new EnterCccd().nhapCanCuoc();
                         activeBank.getCustomerById(inputCCCD);
-
-//                        if (activeBank.getCustomers().get(index) instanceof Customer){
-//                            System.out.println("Customer");
-//                        }
-//                        else System.out.println("k phai Customer");
-//                        if (activeBank.getCustomers().get(index) instanceof DigitalCustomer){
-//                            System.out.println("DigitalCustomer");
-//                        }
-//                        else System.out.println("k phai DigitalCustomer");
                         break;
                     case 2:
                         System.out.println("Chức năng 2: Thêm tài khoản ATM");
@@ -59,12 +49,11 @@ public class MenuAs3 {
                         do {
                             System.out.print("Tạo số tài khoản ATM: ");
                             accNum = sc.nextLine();
-                            if (accNum.matches("^[0-9]{6,6}$")){
+                            if (accNum.matches("^[0-9]{6,6}$")) {
                                 break;
-                            }
-                            else System.out.println("Dữ liệu nhập vào không đúng, vui lòng thử lại!");
+                            } else System.out.println("Dữ liệu nhập vào không đúng, vui lòng thử lại!");
                         } while (!accNum.matches("^[0-9]{6,6}$"));
-                        activeBank.addAccSavings(customer_ID,accNum);
+                        activeBank.addAccSavings(customer_ID, accNum);
                         break;
                     case 3:
                         System.out.println("Chức năng 3: Thêm tài khoản tín dụng");
@@ -72,26 +61,24 @@ public class MenuAs3 {
                         do {
                             System.out.print("Tạo số tài khoản ATM: ");
                             accNum = sc.nextLine();
-                            if (accNum.matches("^[0-9]{6,6}$")){
+                            if (accNum.matches("^[0-9]{6,6}$")) {
                                 break;
-                            }
-                            else System.out.println("Dữ liệu nhập vào không đúng, vui lòng thử lại!");
+                            } else System.out.println("Dữ liệu nhập vào không đúng, vui lòng thử lại!");
                         } while (!accNum.matches("^[0-9]{6,6}$"));
-                        activeBank.addAccLoan(customer_ID,accNum);
+                        activeBank.addAccLoan(customer_ID, accNum);
                         break;
                     case 4:
                         System.out.println("Chức năng 4: Rút tiền");
                         sc.nextLine();
                         System.out.print("Nhập số tài khoản cần rút tiền: ");
                         accNum = sc.nextLine();
-                        if (accNum.matches("^[0-9]{6,6}$")){
-                            activeBank.withdraw(customer_ID,accNum);
-                        }
-                        else System.out.println("Dữ liệu nhập vào không đúng, vui lòng thử lại!");
+                        if (accNum.matches("^[0-9]{6,6}$")) {
+                            activeBank.withdraw(customer_ID, accNum);
+                        } else System.out.println("Dữ liệu nhập vào không đúng, vui lòng thử lại!");
                         break;
                     case 5:
                         System.out.println("Chức năng 5: Lịch sử giao dịch");
-
+                        activeBank.showHistory(customer_ID);
                         break;
                     case 0:
                         System.out.println("Xin chào và hẹn gặp lại");

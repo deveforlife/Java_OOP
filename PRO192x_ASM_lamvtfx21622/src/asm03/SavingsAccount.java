@@ -3,9 +3,12 @@ package asm03;
 import asm02.Account;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class SavingsAccount extends Account implements Withdraw, Report {
+    private String dateTime;
 
     public SavingsAccount() {
 
@@ -23,7 +26,7 @@ public class SavingsAccount extends Account implements Withdraw, Report {
     public void log(double amount) {
         System.out.println("+-------------+----------------------------------------+-------------+");
         System.out.printf("%30s%n", "BIEN LAI GIAO DICH SAVINGS");
-        System.out.printf("NGAY G/D: %28s%n", "GETDATETIME");
+        System.out.printf("NGAY G/D: %28s%n", dateTime);
         System.out.printf("ATM ID: %30s%n", "DIGITAL-BANK-ATM 2023");
         System.out.printf("SO TK: %31s%n", getAccountNumber());
         System.out.printf("SO TIEN: %29s%n", formatCurrency(amount));
@@ -36,6 +39,7 @@ public class SavingsAccount extends Account implements Withdraw, Report {
         if (isAccepted(amount)){
             newBalance = getBalance() - amount;
             setBalance(newBalance);
+            dateTime = getDateTime();
             return true;
         }
         return false;
@@ -59,5 +63,29 @@ public class SavingsAccount extends Account implements Withdraw, Report {
             else return true;
         }
         return false;
+    }
+
+    //Lưu lịch sử rút tiền
+    public void saveTransaction(String accNum, double amount){
+        Transaction transaction = new Transaction();
+        transaction.setAccountNumber(accNum);
+        transaction.setAmount(amount);
+        transaction.setDateTime(dateTime);
+        addTransaction(transaction);
+    }
+
+    //show lịch sử giao dịch
+    public void showTransactionHistory(){
+        System.out.println("Lịch sử giao dịch:");
+        if (getTransactions().size() <= 0) {
+            System.out.println("Không có lịch sử giao dịch.");
+        }
+        else {
+            for (int i = getTransactions().size()-1; i >= 0; i--){
+                System.out.printf("[GD] %5s",getAccountNumber());
+                System.out.printf(" | %15s",formatCurrency(getTransactions().get(i).getAmount()));
+                System.out.printf(" | %25s%n",getTransactions().get(i).getDateTime());
+            }
+        }
     }
 }

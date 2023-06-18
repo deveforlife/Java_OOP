@@ -17,12 +17,32 @@ public class DigitalCustomer extends Customer {
         for (Account account : getAccounts()){
             if (account.getAccountNumber().equals(numAcc)){
                 if (account instanceof SavingsAccount){
-                    ((SavingsAccount)account).withdraw(amount);
-                    ((SavingsAccount)account).log(amount);
+                    if (((SavingsAccount)account).withdraw(amount)){
+                        ((SavingsAccount)account).saveTransaction(numAcc, amount);
+                        System.out.println("Giao dịch thành công");
+                        ((SavingsAccount)account).log(amount);
+                    }
                 }
                 else {
-                    ((LoanAccount)account).withdraw(amount);
-                    ((LoanAccount)account).log(amount);
+                    if (((LoanAccount)account).withdraw(amount)){
+                        ((LoanAccount)account).saveTransaction(numAcc, amount);
+                        System.out.println("Giao dịch thành công");
+                        ((LoanAccount)account).log(amount);
+                    }
+                }
+            }
+        }
+    }
+
+    //tra cứu lịch sử
+    public void showHistory(String numAcc){
+        for (Account account : getAccounts()){
+            if (account.getAccountNumber().equals(numAcc)){
+                if (account instanceof SavingsAccount){
+                    ((SavingsAccount)account).showTransactionHistory();
+                }
+                else {
+                    ((LoanAccount)account).showTransactionHistory();
                 }
             }
         }
