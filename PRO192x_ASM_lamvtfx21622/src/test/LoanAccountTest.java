@@ -3,7 +3,7 @@ package test;
 import asm03.LoanAccount;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.testng.annotations.Test;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,7 +15,7 @@ class LoanAccountTest {
 
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     void withdraw() {
     }
 

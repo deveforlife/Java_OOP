@@ -9,6 +9,7 @@ import java.util.Locale;
 
 public class SavingsAccount extends Account implements Withdraw, Report {
     private String dateTime;
+    private double negaAmount;
 
     public SavingsAccount() {
 
@@ -37,7 +38,8 @@ public class SavingsAccount extends Account implements Withdraw, Report {
     public boolean withdraw(double amount) {
         double newBalance = 0;
         if (isAccepted(amount)){
-            newBalance = getBalance() - amount;
+            negaAmount = -amount;
+            newBalance = getBalance() + negaAmount;
             setBalance(newBalance);
             dateTime = getDateTime();
             return true;
@@ -83,7 +85,7 @@ public class SavingsAccount extends Account implements Withdraw, Report {
         else {
             for (int i = getTransactions().size()-1; i >= 0; i--){
                 System.out.printf("[GD] %5s",getAccountNumber());
-                System.out.printf(" | %15s",formatCurrency(getTransactions().get(i).getAmount()));
+                System.out.printf(" | %15s",formatCurrency(negaAmount));
                 System.out.printf(" | %25s%n",getTransactions().get(i).getDateTime());
             }
         }
