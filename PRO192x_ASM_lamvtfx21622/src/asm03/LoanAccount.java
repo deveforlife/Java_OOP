@@ -34,6 +34,23 @@ public class LoanAccount extends Account implements Withdraw, Report{
         System.out.printf("PHI + VAT: %27s%n", formatCurrency(fee));
     }
 
+    // nộp tiền
+    @Override
+    public boolean deposit(double amount) {
+        double newBalance = 0;
+        if (amount > 0 && amount % 1000 == 0){
+            newBalance = getBalance() + amount;
+            setBalance(newBalance);
+            dateTime = getDateTime();
+            return true;
+        }
+        else {
+            System.out.println("Số tiền nộp không hợp lệ!");
+            return false;
+        }
+    }
+
+    // rút tiền
     @Override
     public boolean withdraw(double amount) {
         double newBalance = 0;

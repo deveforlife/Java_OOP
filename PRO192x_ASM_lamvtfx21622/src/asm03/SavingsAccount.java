@@ -9,7 +9,6 @@ import java.util.Locale;
 
 public class SavingsAccount extends Account implements Withdraw, Report {
     private String dateTime;
-    private double negaAmount;
 
     public SavingsAccount() {
 
@@ -34,12 +33,28 @@ public class SavingsAccount extends Account implements Withdraw, Report {
         System.out.printf("SO DU: %31s%n", formatCurrency(getBalance()));
     }
 
+    // nộp tiền
+    @Override
+    public boolean deposit(double amount) {
+        double newBalance = 0;
+        if (amount > 0 && amount % 1000 == 0){
+            newBalance = getBalance() + amount;
+            setBalance(newBalance);
+            dateTime = getDateTime();
+            return true;
+        }
+        else {
+            System.out.println("Số tiền nộp không hợp lệ!");
+            return false;
+        }
+    }
+
+    // rút tiền
     @Override
     public boolean withdraw(double amount) {
         double newBalance = 0;
         if (isAccepted(amount)){
-            negaAmount = -amount;
-            newBalance = getBalance() + negaAmount;
+            newBalance = getBalance() - amount;
             setBalance(newBalance);
             dateTime = getDateTime();
             return true;
@@ -85,7 +100,7 @@ public class SavingsAccount extends Account implements Withdraw, Report {
         else {
             for (int i = getTransactions().size()-1; i >= 0; i--){
                 System.out.printf("[GD] %5s",getAccountNumber());
-                System.out.printf(" | %15s",formatCurrency(negaAmount));
+                System.out.printf(" | %15s",formatCurrency(getTransactions().get(i).getAmount()));
                 System.out.printf(" | %25s%n",getTransactions().get(i).getDateTime());
             }
         }

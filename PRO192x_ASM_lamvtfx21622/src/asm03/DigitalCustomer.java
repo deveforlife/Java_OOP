@@ -13,19 +13,43 @@ public class DigitalCustomer extends Customer {
         super();
     }
 
+    // nộp tiền
+    public void deposit(String numAcc, double amount){
+        for (Account account : getAccounts()){
+            if (account.getAccountNumber().equals(numAcc)){
+                if (account instanceof SavingsAccount){
+                    if (((SavingsAccount)account).deposit(amount)){
+                        ((SavingsAccount)account).saveTransaction(numAcc, amount);
+                        System.out.println("Nộp tiền thành công");
+                        ((SavingsAccount)account).log(amount);
+                    }
+                }
+                else {
+                    if (((LoanAccount)account).deposit(amount)){
+                        ((LoanAccount)account).saveTransaction(numAcc, amount);
+                        System.out.println("Nộp tiền thành công");
+                        ((LoanAccount)account).log(amount);
+                    }
+                }
+            }
+        }
+    }
+
+    // rút tiền
     public void withdraw(String numAcc, double amount){
+        double negaAmount = -amount;
         for (Account account : getAccounts()){
             if (account.getAccountNumber().equals(numAcc)){
                 if (account instanceof SavingsAccount){
                     if (((SavingsAccount)account).withdraw(amount)){
-                        ((SavingsAccount)account).saveTransaction(numAcc, amount);
+                        ((SavingsAccount)account).saveTransaction(numAcc, negaAmount);
                         System.out.println("Giao dịch thành công");
                         ((SavingsAccount)account).log(amount);
                     }
                 }
                 else {
                     if (((LoanAccount)account).withdraw(amount)){
-                        ((LoanAccount)account).saveTransaction(numAcc, amount);
+                        ((LoanAccount)account).saveTransaction(numAcc, negaAmount);
                         System.out.println("Giao dịch thành công");
                         ((LoanAccount)account).log(amount);
                     }

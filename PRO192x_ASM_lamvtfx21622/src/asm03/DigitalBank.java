@@ -47,6 +47,22 @@ public class DigitalBank extends Bank {
         } else System.out.println("Số CCCD không tồn tại. Vui lòng thử lại!");
     }
 
+    //nộp tiền
+    public void deposit(String customerID, String accNum) {
+        int index = findIndexOfCusId(customerID);
+        DigitalCustomer digitalCustomer = (DigitalCustomer) getCustomers().get(index);
+        try {
+            if (digitalCustomer.isAccExists(accNum)) {
+                System.out.print("Nhập số tiền cần nộp: ");
+                double amount = sc.nextDouble();
+                sc.nextLine();
+                digitalCustomer.deposit(accNum, amount);
+            } else System.out.println("Không tìm thấy tài khoản " + accNum + " trong hệ thống.");
+        } catch (InputMismatchException ime) {
+            System.out.println("Số tiền không đúng, vui lòng thử lại!");
+        }
+    }
+
     //rút tiền
     public void withdraw(String customerID, String accNum) {
         int index = findIndexOfCusId(customerID);

@@ -29,8 +29,9 @@ public class MenuAs3 {
             System.out.println("|   1. Thông tin khách hàng                                          |");
             System.out.println("|   2. Thêm tài khoản ATM                                            |");
             System.out.println("|   3. Thêm tài khoản tín dụng                                       |");
-            System.out.println("|   4. Rút tiền                                                      |");
-            System.out.println("|   5. Lịch sử giao dịch                                             |");
+            System.out.println("|   4. Nộp tiền                                                      |");
+            System.out.println("|   5. Rút tiền                                                      |");
+            System.out.println("|   6. Lịch sử giao dịch                                             |");
             System.out.println("|   0. Thoát                                                         |");
             System.out.println("+-------------+----------------------------------------+-------------+");
             System.out.print("Chọn chức năng: ");
@@ -68,7 +69,16 @@ public class MenuAs3 {
                         activeBank.addAccLoan(customer_ID, accNum);
                         break;
                     case 4:
-                        System.out.println("Chức năng 4: Rút tiền");
+                        System.out.println("Chức năng 4: Nộp tiền");
+                        sc.nextLine();
+                        System.out.print("Nhập số tài khoản cần nộp tiền: ");
+                        accNum = sc.nextLine();
+                        if (accNum.matches("^[0-9]{6,6}$")) {
+                            activeBank.deposit(customer_ID, accNum);
+                        } else System.out.println("Dữ liệu nhập vào không đúng, vui lòng thử lại!");
+                        break;
+                    case 5:
+                        System.out.println("Chức năng 5: Rút tiền");
                         sc.nextLine();
                         System.out.print("Nhập số tài khoản cần rút tiền: ");
                         accNum = sc.nextLine();
@@ -76,8 +86,8 @@ public class MenuAs3 {
                             activeBank.withdraw(customer_ID, accNum);
                         } else System.out.println("Dữ liệu nhập vào không đúng, vui lòng thử lại!");
                         break;
-                    case 5:
-                        System.out.println("Chức năng 5: Lịch sử giao dịch");
+                    case 6:
+                        System.out.println("Chức năng 6: Lịch sử giao dịch");
                         activeBank.showHistory(customer_ID);
                         break;
                     case 0:
