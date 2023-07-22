@@ -16,14 +16,8 @@ public class TextFileService {
         try {
             File file = new File(path);
             String line = null;
-            if (file.length() == 0) {
-                System.out.println("Cảnh báo: File không có dữ liệu !!!");
-            }
-            else if (!file.isFile()) {
-                System.out.println("Đường dẫn không đúng, vui lòng thử lại");
-            }
-            else if (!checkFileStructure(path)) {
-                System.out.println("File không hợp lệ, vui lòng kiểm tra lại");
+            if (!checkPath(path)) {
+                System.out.println("Vui lòng thử lại!");
             }
             else {
                 BufferedReader br = Files.newBufferedReader(file.toPath());
@@ -45,6 +39,26 @@ public class TextFileService {
         return listUser;
     }
 
+    //kiểm tra path
+    private boolean checkPath (String path) {
+        boolean status =true;
+        File file = new File(path);
+        if (!file.exists()) {
+            System.out.println("File không tồn tại.");
+            status = false;
+        }
+        else if (!file.isFile()) {
+            System.out.println("Đường dẫn không đúng!");
+            status = false;
+        }
+        else {
+            System.out.println("Cảnh báo: File không có dữ liệu !!!");
+            status = false;
+        }
+        return status;
+    }
+
+    // kiểm tra cấu trúc file ds
     private boolean checkFileStructure(String path) {
         boolean status = true;
         try {
