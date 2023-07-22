@@ -5,14 +5,35 @@ import asm02.User;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TextFileService {
+    private static String pathSave = "E:\\BOOK\\JAVA\\Java_OOP\\PRO192x_ASM_lamvtfx21622\\src\\store\\customers.dat";
+
+    // ghi dữ liệu xuống file
+    public void writeFile(List<User04> users) {
+        try {
+            FileOutputStream fos = new FileOutputStream(pathSave);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            for (User user : users) {
+                oos.writeObject(user);
+            }
+            oos.close();
+            fos.close();
+        }
+        catch (Exception e){
+
+        }
+    }
+
     // Đọc dữ liệu file
-    public List<User> readFile(String path) {
-        List<User> listUser = new ArrayList<>();
+    public List<User04> readFile(String path) {
+        List<User04> listUser = new ArrayList<>();
         try {
             File file = new File(path);
             String line = null;
@@ -29,7 +50,7 @@ public class TextFileService {
                         String array[] = line.split(",");
                         String cccd = array[0];
                         String name = array[1].replaceAll("\\s\\s+", " ").trim();
-                        listUser.add(new User(name,cccd));
+                        listUser.add(new User04(name,cccd));
                     }
                 }
             }
