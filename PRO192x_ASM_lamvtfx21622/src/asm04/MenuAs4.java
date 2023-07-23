@@ -41,7 +41,7 @@ public class MenuAs4 {
 
                         break;
                     case 2:
-                        List<User04> users = new ArrayList<>();
+                        List<CustomerDao> users = new ArrayList<>();
                         System.out.println("Chức năng 2: Nhập danh sách khách hàng");
                         System.out.println("Nhập đường dẫn (folder\\file.txt): ");
                         sc.nextLine();
@@ -50,7 +50,7 @@ public class MenuAs4 {
                         TextFileService tfs = new TextFileService();
                         users = tfs.readFile(path);
 
-                        for (User04 user : users){
+                        for (CustomerDao user : users){
                             System.out.println(user.getName());
                             System.out.println(user.getCustomerId());
                         }

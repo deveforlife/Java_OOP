@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.Objects;
 
 public class TextFileService {
-    private static String pathSave = "E:\\BOOK\\JAVA\\Java_OOP\\PRO192x_ASM_lamvtfx21622\\src\\store\\customers.dat";
+    private static String pathSave = "\\src\\store\\customers.dat";
 
     // ghi dữ liệu xuống file
-    public void writeFile(List<User04> users) {
+    public void writeFile(List<CustomerDao> users) {
         try {
             FileOutputStream fos = new FileOutputStream(pathSave);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -32,8 +32,9 @@ public class TextFileService {
     }
 
     // Đọc dữ liệu file
-    public List<User04> readFile(String path) {
-        List<User04> listUser = new ArrayList<>();
+    public List<CustomerDao> readFile(String path) {
+        List<CustomerDao> listCustomer = new ArrayList<>();
+        CustomerDao customerDao = new CustomerDao();
         try {
             File file = new File(path);
             String line = null;
@@ -50,18 +51,20 @@ public class TextFileService {
                         String array[] = line.split(",");
                         String cccd = array[0];
                         String name = array[1].replaceAll("\\s\\s+", " ").trim();
-                        listUser.add(new User04(name,cccd));
+                        customerDao.setName(name);
+                        customerDao.setCustomerId(cccd);
+                        listCustomer.add(customerDao);
                     }
                 }
             }
         } catch (Exception e) {
 
         }
-        return listUser;
+        return listCustomer;
     }
 
     //kiểm tra path
-    private boolean checkPath (String path) {
+    private boolean checkPath(String path) {
         boolean status =true;
         File file = new File(path);
         if (!file.exists()) {
