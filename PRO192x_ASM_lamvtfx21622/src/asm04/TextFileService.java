@@ -16,12 +16,12 @@ public class TextFileService {
     private static String pathSave = "\\src\\store\\customers.dat";
 
     // ghi dữ liệu xuống file
-    public void writeFile(List<CustomerDao> users) {
+    public void writeFile(List<CustomerDao> customers) {
         try {
             FileOutputStream fos = new FileOutputStream(pathSave);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            for (User user : users) {
-                oos.writeObject(user);
+            for (CustomerDao customer : customers) {
+                oos.writeObject(customer);
             }
             oos.close();
             fos.close();
