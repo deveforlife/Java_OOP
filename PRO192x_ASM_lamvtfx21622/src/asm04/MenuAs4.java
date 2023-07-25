@@ -33,27 +33,33 @@ public class MenuAs4 {
             System.out.println("+-------------+----------------------------------------+-------------+");
             System.out.print("Chọn chức năng: ");
             try {
+                TextFileService tfs = new TextFileService();
                 selection = sc.nextInt();
-                String accNum;
                 switch (selection) {
                     case 1:
+                        List<CustomerDao> customers = new ArrayList<>();
                         System.out.println("Chức năng 1: Xem danh sách khách hàng");
+                        String cusPath = "E:\\BOOK\\JAVA\\Java_OOP\\PRO192x_ASM_lamvtfx21622" +
+                                "\\src\\store\\customers.dat";
+
+                        customers = tfs.readFile(cusPath);
+
+                        for (CustomerDao customer : customers) {
+                            System.out.println(customer.getName());
+                            System.out.println(customer.getCustomerId());
+                        }
 
                         break;
                     case 2:
-                        List<CustomerDao> users = new ArrayList<>();
+
                         System.out.println("Chức năng 2: Nhập danh sách khách hàng");
                         System.out.println("Nhập đường dẫn (folder\\file.txt): ");
                         sc.nextLine();
-                        String path = sc.nextLine();
-                        path = path.replace("\\", "\\\\");
-                        TextFileService tfs = new TextFileService();
-                        users = tfs.readFile(path);
+                        String inputPath = sc.nextLine();
+                        inputPath = inputPath.replace("\\", "\\\\");
+                        tfs.writeFile(tfs.readFile(inputPath));
 
-                        for (CustomerDao user : users){
-                            System.out.println(user.getName());
-                            System.out.println(user.getCustomerId());
-                        }
+
 
 
                         break;

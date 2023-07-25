@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class TextFileService {
-    private static String pathSave = "\\src\\store\\customers.dat";
+    private static String pathSave = "E:\\BOOK\\JAVA\\Java_OOP\\PRO192x_ASM_lamvtfx21622\\src\\store\\customers.dat";
 
     // ghi dữ liệu xuống file
     public void writeFile(List<CustomerDao> customers) {
@@ -65,7 +65,7 @@ public class TextFileService {
 
     //kiểm tra path
     private boolean checkPath(String path) {
-        boolean status =true;
+        boolean status;
         File file = new File(path);
         if (!file.exists()) {
             System.out.println("File không tồn tại.");
@@ -75,10 +75,12 @@ public class TextFileService {
             System.out.println("Đường dẫn không đúng!");
             status = false;
         }
-        else {
+        else if (file.length() == 0){
             System.out.println("Cảnh báo: File không có dữ liệu !!!");
             status = false;
         }
+        else status = true;
+
         return status;
     }
 
