@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class TextFileService {
-    private static String pathSave = "E:\\BOOK\\JAVA\\Java_OOP\\PRO192x_ASM_lamvtfx21622\\src\\store\\customers.dat";
+    private static String pathSave = "E:\\BOOK\\JAVA\\Java_OOP\\PRO192x_ASM_lamvtfx21622\\src\\store\\customer2.txt";
 
     // ghi dữ liệu xuống file
     public void writeFile(List<CustomerDao> customers) {
@@ -31,7 +31,7 @@ public class TextFileService {
         }
     }
 
-    // Đọc dữ liệu file
+    // Đọc dữ liệu text file
     public List<CustomerDao> readFile(String path) {
         List<CustomerDao> listCustomer = new ArrayList<>();
         CustomerDao customerDao = new CustomerDao();

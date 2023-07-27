@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class LoanAccountTest {
     @BeforeAll
+
     static void beforeAll(){
         LoanAccount loanAccount = new LoanAccount();
         loanAccount.setBalance(50000000);

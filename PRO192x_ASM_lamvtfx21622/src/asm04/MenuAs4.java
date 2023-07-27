@@ -4,6 +4,8 @@ import asm01.EnterCccd;
 import asm02.User;
 import asm03.DigitalBank;
 
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -37,17 +39,25 @@ public class MenuAs4 {
                 selection = sc.nextInt();
                 switch (selection) {
                     case 1:
-                        List<CustomerDao> customers = new ArrayList<>();
+                        //List<CustomerDao> customers = new ArrayList<>();
                         System.out.println("Chức năng 1: Xem danh sách khách hàng");
-                        String cusPath = "E:\\BOOK\\JAVA\\Java_OOP\\PRO192x_ASM_lamvtfx21622" +
-                                "\\src\\store\\customers.dat";
+                        String cusPath = "D:\\BOOK\\JAVA\\Java_OOP\\PRO192x_ASM_lamvtfx21622\\src\\store\\customers.dat";
 
-                        customers = tfs.readFile(cusPath);
+                        try {
+                            FileInputStream fis = new FileInputStream(cusPath);
+                            ObjectInputStream ois = new ObjectInputStream(fis);
 
-                        for (CustomerDao customer : customers) {
-                            System.out.println(customer.getName());
-                            System.out.println(customer.getCustomerId());
+                            CustomerDao customerDao = (CustomerDao) ois.readObject();
+
+                            System.out.println(customerDao);
                         }
+                        catch (Exception e){
+
+                        }
+
+
+
+
 
                         break;
                     case 2:
