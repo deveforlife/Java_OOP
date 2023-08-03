@@ -67,7 +67,7 @@ public class MenuAs4 {
                         sc.nextLine();
                         String inputPath = sc.nextLine();
                         inputPath = inputPath.replace("\\", "\\\\");
-                        tfs.writeFile(tfs.readFile(inputPath));
+                        //tfs.writeFile(tfs.readFile(inputPath));
 
 
 
