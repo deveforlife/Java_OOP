@@ -1,10 +1,12 @@
 package asm04;
 
 import asm01.EnterCccd;
+import asm02.Customer;
 import asm02.User;
 import asm03.DigitalBank;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -41,35 +43,27 @@ public class MenuAs4 {
                     case 1:
                         //List<CustomerDao> customers = new ArrayList<>();
                         System.out.println("Chức năng 1: Xem danh sách khách hàng");
-                        String cusPath = "D:\\BOOK\\JAVA\\Java_OOP\\PRO192x_ASM_lamvtfx21622\\src\\store\\customers.dat";
-
-                        try {
-                            FileInputStream fis = new FileInputStream(cusPath);
-                            ObjectInputStream ois = new ObjectInputStream(fis);
-
-                            CustomerDao customerDao = (CustomerDao) ois.readObject();
-
-                            System.out.println(customerDao);
+                        List<Customer> list = new ArrayList<>(CustomerDao.list());
+                        for (int i = 0; i < list.size(); i++) {
+                            System.out.println("STT " + (i + 1) + ":");
+                            list.get(i).displayInformation();
                         }
-                        catch (Exception e){
-
-                        }
-
-
-
 
 
                         break;
                     case 2:
-
                         System.out.println("Chức năng 2: Nhập danh sách khách hàng");
                         System.out.println("Nhập đường dẫn (folder\\file.txt): ");
                         sc.nextLine();
-                        String inputPath = sc.nextLine();
-                        inputPath = inputPath.replace("\\", "\\\\");
-                        //tfs.writeFile(tfs.readFile(inputPath));
+                        String filePath = sc.nextLine();
+                        filePath = filePath.replace("\\","\\\\");
+                        List<Customer> listCustom = new ArrayList<>(TextFileService.readFile(filePath));
 
-
+                        try {
+                            CustomerDao.save(listCustom);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
 
 
                         break;
