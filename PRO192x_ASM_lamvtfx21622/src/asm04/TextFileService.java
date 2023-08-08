@@ -14,19 +14,24 @@ public class TextFileService {
 
     // ghi dữ liệu xuống file
     public static <T> void writeFile(String filepath, List<T> objects) {
-        try (ObjectOutputStream file = new ObjectOutputStream(new FileOutputStream(filepath))) {
+        try (ObjectOutputStream file = new ObjectOutputStream(new BufferedOutputStream
+                (new FileOutputStream(filepath)))) {
             for (T object : objects) {
                 file.writeObject(object);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    // Đọc dữ liệu text file
+
+
+    // Đọc dữ liệu object file
     public static <T> List<T> readFile(String filepath) {
         List<T> objects = new ArrayList<>();
-        try (ObjectInputStream file = new ObjectInputStream(new FileInputStream(filepath))) {
+        try (ObjectInputStream file = new ObjectInputStream(new BufferedInputStream
+                (new FileInputStream(filepath)))) {
             boolean eof = false;
             while (!eof) {
                 try {
@@ -45,7 +50,4 @@ public class TextFileService {
         }
         return objects;
     }
-
-
-
 }

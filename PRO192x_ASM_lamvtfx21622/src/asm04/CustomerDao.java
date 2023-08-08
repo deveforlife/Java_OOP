@@ -8,8 +8,7 @@ import java.util.List;
 
 public class CustomerDao extends Customer implements Serializable {
 
-    private final static String FILE_PATH = "D:\\BOOK\\JAVA\\Java_OOP\\PRO192x_ASM_lamvtfx21622\\" +
-            "src\\store\\customers.dat";
+    private final static String FILE_PATH = "src\\store\\customers.dat";
 
     public CustomerDao() {
 
@@ -22,6 +21,4 @@ public class CustomerDao extends Customer implements Serializable {
     public static List<Customer> list(){
         return TextFileService.readFile(FILE_PATH);
     }
-
-
 }

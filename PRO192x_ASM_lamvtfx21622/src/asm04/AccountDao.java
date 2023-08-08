@@ -49,7 +49,7 @@ public class AccountDao extends Account implements Serializable {
 
 
     public static void save(List<Account> accounts) throws IOException {
-        TextFileService.writeFile(FILE_PATH, accounts);
+        //TextFileService.writeFile(FILE_PATH, accounts);
     }
 
     public static List<Account> list(){

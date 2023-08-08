@@ -3,7 +3,6 @@ package asm04;
 import asm01.EnterCccd;
 import asm02.Customer;
 import asm02.User;
-import asm03.DigitalBank;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -37,7 +36,6 @@ public class MenuAs4 {
             System.out.println("+-------------+----------------------------------------+-------------+");
             System.out.print("Chọn chức năng: ");
             try {
-                TextFileService tfs = new TextFileService();
                 selection = sc.nextInt();
                 switch (selection) {
                     case 1:
@@ -46,7 +44,8 @@ public class MenuAs4 {
                         List<Customer> list = new ArrayList<>(CustomerDao.list());
                         for (int i = 0; i < list.size(); i++) {
                             System.out.println("STT " + (i + 1) + ":");
-                            list.get(i).displayInformation();
+                            System.out.println(list.get(i).getCustomerId());
+                            System.out.println(list.get(i).getName());
                         }
 
 
@@ -57,15 +56,8 @@ public class MenuAs4 {
                         sc.nextLine();
                         String filePath = sc.nextLine();
                         filePath = filePath.replace("\\","\\\\");
-                        List<Customer> listCustom = new ArrayList<>(TextFileService.readFile(filePath));
-
-                        try {
-                            CustomerDao.save(listCustom);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-
-
+                        DigitalBank digitalBank = new DigitalBank();
+                        digitalBank.addCustomer(filePath);
                         break;
                     case 3:
                         System.out.println("Chức năng 3: Thêm tài khoản ATM");

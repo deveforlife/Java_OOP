@@ -16,7 +16,7 @@ public class TransactionDao extends Transaction implements Serializable {
     }
 
     public static void save(List<Transaction> transactions) throws IOException {
-        TextFileService.writeFile(FILE_PATH, transactions);
+        //TextFileService.writeFile(FILE_PATH, transactions);
     }
 
     public static List<Transaction> list(){

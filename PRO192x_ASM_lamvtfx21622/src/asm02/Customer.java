@@ -1,9 +1,10 @@
 package asm02;
 
+import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.*;
 
-public class Customer extends User {
+public class Customer extends User implements Serializable {
     private List<Account> accounts;
 
     private static Scanner sc = new Scanner(System.in);
@@ -11,6 +12,8 @@ public class Customer extends User {
     public Customer() {
         this.accounts = new ArrayList<>();
     }
+
+
 
     public void displayInformation() {
         //chuyển đổi kiêu tiền tệ
