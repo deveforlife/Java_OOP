@@ -1,5 +1,7 @@
 package asm02;
 
+import asm04.AccountDao;
+
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.*;
@@ -10,7 +12,7 @@ public class Customer extends User implements Serializable {
     private static Scanner sc = new Scanner(System.in);
 
     public Customer() {
-        this.accounts = new ArrayList<>();
+        this.accounts = new ArrayList<>(AccountDao.list());
     }
 
 
@@ -28,9 +30,16 @@ public class Customer extends User implements Serializable {
         }
     }
 
+
     public List<Account> getAccounts() {
         return accounts;
     }
+
+    public List<Account> getAccounts(String customerID) {
+        return accounts;
+    }
+
+
 
     private double getBalance() {
         double totalBalance = 0;

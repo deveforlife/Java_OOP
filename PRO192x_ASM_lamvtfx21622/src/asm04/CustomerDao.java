@@ -14,6 +14,7 @@ public class CustomerDao extends Customer implements Serializable {
 
     }
 
+
     public static void save(List<Customer> customers) throws IOException {
         TextFileService.writeFile(FILE_PATH, customers);
     }

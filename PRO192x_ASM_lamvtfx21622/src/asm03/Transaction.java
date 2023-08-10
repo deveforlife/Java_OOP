@@ -1,9 +1,10 @@
 package asm03;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
-public class Transaction {
+public class Transaction implements Serializable {
     private String id;
     private String accountNumber;
     private double amount;

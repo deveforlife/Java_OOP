@@ -9,14 +9,14 @@ import java.util.List;
 
 public class TransactionDao extends Transaction implements Serializable {
 
-    private final static String FILE_PATH = "store\\transactions.dat";
+    private final static String FILE_PATH = "src\\store\\transactions.dat";
 
     public TransactionDao() {
 
     }
 
     public static void save(List<Transaction> transactions) throws IOException {
-        //TextFileService.writeFile(FILE_PATH, transactions);
+        TextFileService.writeFile(FILE_PATH, transactions);
     }
 
     public static List<Transaction> list(){

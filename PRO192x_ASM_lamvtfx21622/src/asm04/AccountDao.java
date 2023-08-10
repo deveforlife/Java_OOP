@@ -10,7 +10,7 @@ import java.util.List;
 
 public class AccountDao extends Account implements Serializable {
 
-    private final static String FILE_PATH = "store\\accounts.dat";
+    private final static String FILE_PATH = "src\\store\\accounts.dat";
 
     public AccountDao() {
 
@@ -49,7 +49,7 @@ public class AccountDao extends Account implements Serializable {
 
 
     public static void save(List<Account> accounts) throws IOException {
-        //TextFileService.writeFile(FILE_PATH, accounts);
+        TextFileService.writeFile(FILE_PATH, accounts);
     }
 
     public static List<Account> list(){

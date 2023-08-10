@@ -60,7 +60,7 @@ public class MenuAs3 {
                         System.out.println("Chức năng 3: Thêm tài khoản tín dụng");
                         sc.nextLine();
                         do {
-                            System.out.print("Tạo số tài khoản ATM: ");
+                            System.out.print("Tạo số tài khoản tín dụng: ");
                             accNum = sc.nextLine();
                             if (accNum.matches("^[0-9]{6,6}$")) {
                                 break;

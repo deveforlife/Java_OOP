@@ -36,19 +36,13 @@ public class MenuAs4 {
             System.out.println("+-------------+----------------------------------------+-------------+");
             System.out.print("Chọn chức năng: ");
             try {
+                DigitalBank digitalBank = new DigitalBank();
                 selection = sc.nextInt();
                 switch (selection) {
                     case 1:
                         //List<CustomerDao> customers = new ArrayList<>();
                         System.out.println("Chức năng 1: Xem danh sách khách hàng");
-                        List<Customer> list = new ArrayList<>(CustomerDao.list());
-                        for (int i = 0; i < list.size(); i++) {
-                            System.out.println("STT " + (i + 1) + ":");
-                            System.out.println(list.get(i).getCustomerId());
-                            System.out.println(list.get(i).getName());
-                        }
-
-
+                        digitalBank.showCustomers();
                         break;
                     case 2:
                         System.out.println("Chức năng 2: Nhập danh sách khách hàng");
@@ -56,11 +50,12 @@ public class MenuAs4 {
                         sc.nextLine();
                         String filePath = sc.nextLine();
                         filePath = filePath.replace("\\","\\\\");
-                        DigitalBank digitalBank = new DigitalBank();
                         digitalBank.addCustomer(filePath);
                         break;
                     case 3:
                         System.out.println("Chức năng 3: Thêm tài khoản ATM");
+                        Scanner scanner = new Scanner(System.in);
+                        digitalBank.creatAccountAtm(scanner);
 
                         break;
                     case 4:

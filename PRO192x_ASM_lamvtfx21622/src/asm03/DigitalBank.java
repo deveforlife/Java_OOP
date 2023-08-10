@@ -15,7 +15,7 @@ public class DigitalBank extends Bank {
 
     }
 
-    //((DigitalCustomer)newCustomer).withdraw() ép kiểu
+
     public void addCustomer(String customer_name, String customerID) {
         DigitalCustomer newCustomer = new DigitalCustomer();
         newCustomer.setName(customer_name);
@@ -23,6 +23,7 @@ public class DigitalBank extends Bank {
         addCustomer(newCustomer);
     }
 
+    //((DigitalCustomer)newCustomer).withdraw() ép kiểu
     public void addAccSavings(String customerID, String accNum) {
         for (Customer customer : getCustomers()) {
             if (customer.getCustomerId().equals(customerID)) {

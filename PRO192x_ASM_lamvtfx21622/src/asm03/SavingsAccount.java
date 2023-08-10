@@ -2,12 +2,13 @@ package asm03;
 
 import asm02.Account;
 
+import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class SavingsAccount extends Account implements Withdraw, Report {
+public class SavingsAccount extends Account implements Withdraw, Report, Serializable {
     private String dateTime;
 
     public SavingsAccount() {

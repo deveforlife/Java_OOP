@@ -2,6 +2,7 @@ package asm02;
 
 import asm03.Transaction;
 
+import java.io.Serializable;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -9,10 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class Account {
+public class Account implements Serializable {
     private String accountNumber;
     private double balance;
     private List<Transaction> transactions;
+
+    //----ASM4
+    protected String customerID;
     public Account() {
         this.transactions = new ArrayList<>();
     }
@@ -39,6 +43,16 @@ public class Account {
         this.balance = balance;
     }
 
+
+    //----------asm4----------
+    public String getCustomerID() {
+        return customerID;
+    }
+
+    public void setCustomerID(String customerID) {
+        this.customerID = customerID;
+    }
+
     public Boolean isPremium() {
         if (this.balance >= 10000000) {
             return true;
@@ -46,6 +60,7 @@ public class Account {
             return false;
         }
     }
+    //------------------------------------
 
     //định dạng tiền tệ
     protected String formatCurrency (double currency){
