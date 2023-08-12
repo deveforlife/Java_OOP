@@ -10,6 +10,9 @@ public class Transaction implements Serializable {
     private double amount;
     private String dateTime;
 
+    //asm4
+    private String type;
+
     public Transaction() {
         this.id = String.valueOf(UUID.randomUUID());
     }
@@ -36,5 +39,15 @@ public class Transaction implements Serializable {
 
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
+    }
+
+    //asm4
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

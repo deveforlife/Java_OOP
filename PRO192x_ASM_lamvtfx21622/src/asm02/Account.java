@@ -1,6 +1,8 @@
 package asm02;
 
 import asm03.Transaction;
+import asm04.AccountDao;
+import asm04.TransactionDao;
 
 import java.io.Serializable;
 import java.text.NumberFormat;
@@ -9,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class Account implements Serializable {
     private String accountNumber;
@@ -43,25 +46,6 @@ public class Account implements Serializable {
         this.balance = balance;
     }
 
-
-    //----------asm4----------
-    public String getCustomerID() {
-        return customerID;
-    }
-
-    public void setCustomerID(String customerID) {
-        this.customerID = customerID;
-    }
-
-    public Boolean isPremium() {
-        if (this.balance >= 10000000) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    //------------------------------------
-
     //định dạng tiền tệ
     protected String formatCurrency (double currency){
         Locale vietnam = new Locale("vi", "VN");
@@ -83,6 +67,36 @@ public class Account implements Serializable {
     //add transaction vào list
     protected void addTransaction(Transaction transaction){
         transactions.add(transaction);
+    }
+
+    public Boolean isPremium() {
+        if (this.balance >= 10000000) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    //----------asm4----------
+    public String getCustomerID() {
+        return customerID;
+    }
+
+    public void setCustomerID(String customerID) {
+        this.customerID = customerID;
+    }
+
+    //lay transaction
+    public List<Transaction> getTransactions(String accountNumber) {
+        List<Transaction> list = new ArrayList<>(TransactionDao.list());
+
+        List<Transaction> transWithAccNumber = list
+                .stream()
+                .filter(c -> c.getAccountNumber().equals(accountNumber))
+                .collect(Collectors.toList());
+
+        return transWithAccNumber;
     }
 
 }

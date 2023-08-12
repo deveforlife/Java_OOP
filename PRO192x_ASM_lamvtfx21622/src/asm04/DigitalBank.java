@@ -2,7 +2,9 @@ package asm04;
 
 import asm02.Account;
 import asm02.Customer;
+import asm03.DigitalCustomer;
 import asm03.SavingsAccount;
+import asm03.Transaction;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -12,8 +14,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class DigitalBank extends asm03.DigitalBank {
-
-
+    private static Scanner scanner = new Scanner(System.in);
+    private List<Customer> customersList = new ArrayList<>(CustomerDao.list());
+    private List<Account> accountList = new ArrayList<>(AccountDao.list());
+    private List<Transaction> transactionList = new ArrayList<>(TransactionDao.list());
 
     // hiển thị khách hàng
     public void showCustomers() {
@@ -24,7 +28,7 @@ public class DigitalBank extends asm03.DigitalBank {
         else {
             for (int i = 0; i < list.size(); i++) {
                 System.out.println("STT " + (i + 1) + ":");
-                list.get(i).displayInformation();
+                list.get(i).displayInformation04();
             }
             System.out.println("----------- Hết danh sách -----------");
         }
@@ -89,37 +93,122 @@ public class DigitalBank extends asm03.DigitalBank {
     }
 
     //thêm tài khoản atm
-    public void creatAccountAtm(Scanner scanner){
-        List<Customer> customersList = new ArrayList<>(CustomerDao.list());
-        List<Account> accountList = new ArrayList<>(AccountDao.list());
+    public void creatAccountAtm(){
 
-        System.out.print("Nhập số CCCD của bạn: ");
-        String inputCCCD = scanner.nextLine();
+
+        String inputCCCD = typeCCCD();
 
         if (getCustomerById(customersList,inputCCCD) != null){
-            getCustomerById(customersList,inputCCCD).displayInformation();
+            getCustomerById(customersList,inputCCCD).displayInformation04();
 
             System.out.print("Nhập số tài khoản ATM muốn tạo: ");
-            String newNumberAccount = scanner.nextLine();
-            SavingsAccount newAccount = new SavingsAccount();
-            newAccount.setAccountNumber(newNumberAccount);
+            String newNumberAccount = typeAccountNumber();
 
-            if (!isAccountExisted(accountList,newAccount)){
-                newAccount.setBalance(0);
-                newAccount.setCustomerID(inputCCCD);
-                System.out.println("Tạo tài khoản thành công");
-                accountList.add(newAccount);
-                try {
-                    AccountDao.save(accountList);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+            if (newNumberAccount.matches("^[0-9]{6,6}$")) {
+                SavingsAccount newAccount = new SavingsAccount();
+                newAccount.setAccountNumber(newNumberAccount);
+                if (accountList.size() == 0) {
+                    newAccount.setBalance(0);
+                    newAccount.setCustomerID(inputCCCD);
+                    System.out.println("Tạo tài khoản thành công");
+                    accountList.add(newAccount);
+                    try {
+                        AccountDao.save(accountList);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
-            }
-            else System.out.println("Số tài khoản này đã tồn tại.");
+                else if (!isAccountExisted(accountList,newAccount)){
+                    newAccount.setBalance(0);
+                    newAccount.setCustomerID(inputCCCD);
+                    System.out.println("Tạo tài khoản thành công");
+                    accountList.add(newAccount);
+                    try {
+                        AccountDao.save(accountList);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                else System.out.println("Số tài khoản này đã tồn tại.");
+            } else System.out.println("Dữ liệu nhập vào không đúng, vui lòng thử lại!");
         }
         else System.out.println("Khách hàng không tồn tại.");
     }
 
+    //tạo giao dịch
+
+    public void createTransaction(String type){
+        //- Nhập cccd
+        Account account = new Account();
+        String inputCCCD = typeCCCD();
+        if (getCustomerById(customersList,inputCCCD) != null) {
+            getCustomerById(customersList, inputCCCD).displayInformation04();
+
+            List<Account> listAccountByCCCD = getCustomerById(customersList, inputCCCD)
+                    .getAccounts(inputCCCD);
+
+            System.out.print("Nhập số tài khoản: ");
+            String numberAccount = typeAccountNumber();
+            if (listAccountByCCCD.size() == 0){
+                System.out.println("Khách hàng chưa có tài khoản.");
+            }
+            else {
+                for (int i = 0; i < listAccountByCCCD.size();i++){
+                    if (listAccountByCCCD.get(i).getAccountNumber().equals(numberAccount)){
+                        account = listAccountByCCCD.get(i);
+                        break;
+                    }
+                    else account = null;
+                }
+            }
+            if (account != null){
+                System.out.print("Nhập số tiền: ");
+                double amount = scanner.nextDouble();
+                scanner.nextLine();
+                switch (type){
+                    case "deposit":
+                        ((SavingsAccount) account).deposit(amount);
+                        ((SavingsAccount) account).log(amount);
+                        AccountDao.update(account);
+                        ((SavingsAccount) account).saveTransaction(numberAccount,amount,type,TransactionDao.list());
+                        break;
+                    case "withdraw":
+                        ((SavingsAccount) account).withdraw(amount);
+                        ((SavingsAccount) account).log(amount);
+                        AccountDao.update(account);
+                        ((SavingsAccount) account).saveTransaction(numberAccount,amount,type,TransactionDao.list());
+                        break;
+                    case "transfer":
+                        break;
+                    default:
+                }
+            }
+            else System.out.println("Không tìm thấy số tài khoản "+numberAccount);
+        }
+        else System.out.println("Khách hàng không tồn tại.");
+    }
+
+    // hiển thị lịch sử giao dịch
+    public void showHistory() {
+        // Nhập cccd
+        String inputCCCD = typeCCCD();
+        if (isCustomerIdExisted(customersList,inputCCCD)){
+            getCustomerById(customersList,inputCCCD).displayInformation04();
+
+            // Nhập stk cần show lịch sử
+            System.out.print("Nhập số tài khoản: ");
+            String accountNumber = typeAccountNumber();
+            for (Account account : accountList){
+                if (account.getAccountNumber().equals(accountNumber)){
+                    ((SavingsAccount) account).showTransactionHistory(account.getTransactions(accountNumber));
+                }
+                else System.out.println("Số tài khoản không tồn tại.");
+            }
+        }
+        else System.out.println("Không tồn tại khách hàng có CCCD "+inputCCCD);
+
+
+    }
 
     //kiểm tra customer
     private boolean isCustomerExisted(List<Customer> customers, Customer newCustomer){
@@ -141,7 +230,7 @@ public class DigitalBank extends asm03.DigitalBank {
         return false;
     }
 
-    //kiểm tra customer
+    //kiểm tra customer = cccd
     private boolean isCustomerIdExisted(List<Customer> customers, String cccd){
         for (Customer customer : customers) {
             if (customer.getCustomerId().equals(cccd)){
@@ -158,5 +247,16 @@ public class DigitalBank extends asm03.DigitalBank {
             }
         }
         return null;
+    }
+
+    private String typeCCCD(){
+        System.out.print("Nhập số CCCD của bạn: ");
+        String inputCCCD = scanner.nextLine();
+        return inputCCCD;
+    }
+
+    private String typeAccountNumber(){
+        String accountNumber = scanner.nextLine();
+        return accountNumber;
     }
 }

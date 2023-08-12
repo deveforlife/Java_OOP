@@ -1,14 +1,18 @@
 package asm03;
 
 import asm02.Account;
+import asm04.AccountDao;
+import asm04.IReport;
+import asm04.TransactionDao;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class SavingsAccount extends Account implements Withdraw, Report, Serializable {
+public class SavingsAccount extends Account implements Withdraw, Report, IReport, Serializable {
     private String dateTime;
 
     public SavingsAccount() {
@@ -103,6 +107,48 @@ public class SavingsAccount extends Account implements Withdraw, Report, Seriali
                 System.out.printf("[GD] %5s",getAccountNumber());
                 System.out.printf(" | %15s",formatCurrency(getTransactions().get(i).getAmount()));
                 System.out.printf(" | %25s%n",getTransactions().get(i).getDateTime());
+            }
+        }
+    }
+
+    //asm4
+    //Lưu lịch sử rút tiền
+    public void saveTransaction(String accNum, double amount, String type, List<Transaction> transactionList){
+        Transaction transaction = new Transaction();
+        transaction.setAccountNumber(accNum);
+        transaction.setAmount(amount);
+        transaction.setDateTime(dateTime);
+        transaction.setType(type);
+
+        transactionList.add(transaction);
+        try {
+            TransactionDao.save(transactionList);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void log(double amount, String type, String receiveAccount) {
+        System.out.println("+-------------+----------------------------------------+-------------+");
+        System.out.printf("%30s%n", "BIEN LAI GIAO DICH SAVINGS");
+        System.out.printf("NGAY G/D: %28s%n", dateTime);
+        System.out.printf("ATM ID: %30s%n", "DIGITAL-BANK-ATM 2023");
+        System.out.printf("SO TK: %31s%n", getAccountNumber());
+        System.out.printf("SO TIEN: %29s%n", formatCurrency(amount));
+        System.out.printf("SO DU: %31s%n", formatCurrency(getBalance()));
+    }
+
+    public void showTransactionHistory(List<Transaction> transactionList){
+        System.out.println("Lịch sử giao dịch:");
+        if (transactionList.size() <= 0) {
+            System.out.println("Không có lịch sử giao dịch.");
+        }
+        else {
+            for (int i = transactionList.size()-1; i >= 0; i--){
+                System.out.printf("[GD] %5s",transactionList.get(i).getAccountNumber());
+                System.out.printf(" | %15s",transactionList.get(i).getType());
+                System.out.printf(" | %15s",formatCurrency(transactionList.get(i).getAmount()));
+                System.out.printf(" | %25s%n",transactionList.get(i).getDateTime());
             }
         }
     }

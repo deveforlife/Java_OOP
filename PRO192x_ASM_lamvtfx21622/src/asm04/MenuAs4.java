@@ -40,7 +40,6 @@ public class MenuAs4 {
                 selection = sc.nextInt();
                 switch (selection) {
                     case 1:
-                        //List<CustomerDao> customers = new ArrayList<>();
                         System.out.println("Chức năng 1: Xem danh sách khách hàng");
                         digitalBank.showCustomers();
                         break;
@@ -54,9 +53,7 @@ public class MenuAs4 {
                         break;
                     case 3:
                         System.out.println("Chức năng 3: Thêm tài khoản ATM");
-                        Scanner scanner = new Scanner(System.in);
-                        digitalBank.creatAccountAtm(scanner);
-
+                        digitalBank.creatAccountAtm();
                         break;
                     case 4:
                         System.out.println("Chức năng 4: Chuyển tiền");
@@ -64,15 +61,15 @@ public class MenuAs4 {
                         break;
                     case 5:
                         System.out.println("Chức năng 5: Rút tiền");
-
+                        digitalBank.createTransaction("withdraw");
                         break;
                     case 6:
                         System.out.println("Chức năng 6: Nộp tiền");
-
+                        digitalBank.createTransaction("deposit");
                         break;
                     case 7:
                         System.out.println("Chức năng 7: Tra cứu lịch sử giao dịch");
-
+                        digitalBank.showHistory();
                         break;
                     case 0:
                         System.out.println("Xin chào và hẹn gặp lại");

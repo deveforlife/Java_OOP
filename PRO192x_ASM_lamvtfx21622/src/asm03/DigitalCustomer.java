@@ -4,6 +4,7 @@ import asm02.Account;
 import asm02.Customer;
 
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class DigitalCustomer extends Customer {
@@ -126,5 +127,21 @@ public class DigitalCustomer extends Customer {
             }
         }
         return false;
+    }
+
+    //asm4
+    // nộp tiền
+    public void deposit(List<Account> accountList, String numAcc, double amount, String type, List<Transaction> transactionList){
+        for (Account account : accountList){
+            if (account.getAccountNumber().equals(numAcc)){
+                if (account instanceof SavingsAccount){
+                    if (((SavingsAccount)account).deposit(amount)){
+                        ((SavingsAccount)account).saveTransaction(numAcc, amount, type, transactionList);
+                        System.out.println("Nộp tiền thành công");
+                        ((SavingsAccount)account).log(amount);
+                    }
+                }
+            }
+        }
     }
 }
