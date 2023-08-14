@@ -128,14 +128,18 @@ public class SavingsAccount extends Account implements Withdraw, Report, IReport
         }
     }
 
+
     public void log(double amount, String type, String receiveAccount) {
         System.out.println("+-------------+----------------------------------------+-------------+");
         System.out.printf("%30s%n", "BIEN LAI GIAO DICH SAVINGS");
         System.out.printf("NGAY G/D: %28s%n", dateTime);
         System.out.printf("ATM ID: %30s%n", "DIGITAL-BANK-ATM 2023");
-        System.out.printf("SO TK: %31s%n", getAccountNumber());
+        System.out.printf("SO TK NGUON: %25s%n", getAccountNumber());
+        System.out.printf("SO TK NHAN: %26s%n", receiveAccount);
+        System.out.printf("LOAI GD: %29s%n", type);
         System.out.printf("SO TIEN: %29s%n", formatCurrency(amount));
         System.out.printf("SO DU: %31s%n", formatCurrency(getBalance()));
+
     }
 
     public void showTransactionHistory(List<Transaction> transactionList){

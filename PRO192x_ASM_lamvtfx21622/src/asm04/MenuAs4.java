@@ -57,7 +57,7 @@ public class MenuAs4 {
                         break;
                     case 4:
                         System.out.println("Chức năng 4: Chuyển tiền");
-
+                        digitalBank.createTransaction("transfer");
                         break;
                     case 5:
                         System.out.println("Chức năng 5: Rút tiền");

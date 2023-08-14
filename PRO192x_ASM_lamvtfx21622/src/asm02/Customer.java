@@ -71,7 +71,7 @@ public class Customer extends User implements Serializable {
         //chuyển đổi kiêu tiền tệ
         Locale vietnam = new Locale("vi", "VN");
         NumberFormat currencyVN = NumberFormat.getCurrencyInstance(vietnam);
-        String soDu = currencyVN.format(getBalance());
+        String soDu = currencyVN.format(getBalance04());
 
         System.out.println("+-------------+----------------------------------------+-------------+");
         System.out.println(getCustomerId() + "  |   " + getName().toUpperCase() + "  |  " + isPremium() + "   |  " + soDu);
@@ -89,5 +89,23 @@ public class Customer extends User implements Serializable {
                 .collect(Collectors.toList());
 
         return accountWithCustomerID;
+    }
+
+    private double getBalance04() {
+        double totalBalance = 0;
+        for (int i = 0; i < getAccounts(getCustomerId()).size(); i++) {
+            totalBalance = totalBalance + getAccounts(getCustomerId()).get(i).getBalance();
+        }
+        return totalBalance;
+    }
+
+    public String isPremium04() {
+        String classCustom = "STANDARD";
+        for (int i = 0; i < getAccounts(getCustomerId()).size(); i++) {
+            if (getAccounts(getCustomerId()).get(i).isPremium()) {
+                classCustom = "PREMIUM";
+            }
+        }
+        return classCustom;
     }
 }
