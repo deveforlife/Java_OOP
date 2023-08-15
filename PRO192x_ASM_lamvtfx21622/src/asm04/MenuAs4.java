@@ -49,7 +49,9 @@ public class MenuAs4 {
                         sc.nextLine();
                         String filePath = sc.nextLine();
                         filePath = filePath.replace("\\","\\\\");
-                        digitalBank.addCustomer(filePath);
+                        if (TextFileService.checkFilePath(filePath)){
+                            digitalBank.addCustomer(filePath);
+                        }
                         break;
                     case 3:
                         System.out.println("Chức năng 3: Thêm tài khoản ATM");

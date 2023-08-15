@@ -9,9 +9,11 @@ import asm03.Transaction;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class DigitalBank extends asm03.DigitalBank {
     private static Scanner scanner = new Scanner(System.in);
@@ -62,7 +64,12 @@ public class DigitalBank extends asm03.DigitalBank {
 
         //kiểm tra list, gộp list
         if (getCusFromFile.size() == 0) {
-            getCusFromFile.addAll(newListCus);
+
+            List<Customer> uniqueCus = newListCus.stream()
+                    .filter(distinctByKey(Customer::getCustomerId))
+                    .collect(Collectors.toList());
+
+            getCusFromFile.addAll(uniqueCus);
         }
         else {
             for (int i = 0; i < newListCus.size();i++){
@@ -136,7 +143,6 @@ public class DigitalBank extends asm03.DigitalBank {
     }
 
     //tạo giao dịch
-
     public void createTransaction(String type){
         //- Nhập cccd
         Account sourceAccount = new Account();
@@ -201,7 +207,6 @@ public class DigitalBank extends asm03.DigitalBank {
                                             break;
                                         }
                                     }
-
                                     ((SavingsAccount) receivedAccount).deposit(amount);
                                     AccountDao.update(receivedAccount);
                                     ((SavingsAccount) receivedAccount).saveTransaction(receivedAccountNumber,amount,type,TransactionDao.list());
@@ -213,13 +218,8 @@ public class DigitalBank extends asm03.DigitalBank {
                                 }
                                 else System.out.println("Xác nhận thất bại, vui lòng nhập Y (YES) hoặc N (NO).");
                             }
-
-
-
-
                         }
                         else System.out.println("Số tài khoản nhận không đúng, vui lòng kiểm tra lại");
-
                         break;
                     default:
                 }
@@ -321,5 +321,11 @@ public class DigitalBank extends asm03.DigitalBank {
                 break;
             }
         }
+    }
+
+    // viết lại hàm predicate để lấy các object duy nhất
+    public <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor){
+        Set<T> seen = ConcurrentHashMap.newKeySet();
+        return t -> seen.add((T) keyExtractor.apply(t));
     }
 }

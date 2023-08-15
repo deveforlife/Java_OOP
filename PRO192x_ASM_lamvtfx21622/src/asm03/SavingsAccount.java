@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class SavingsAccount extends Account implements Withdraw, Report, IReport, Serializable {
+    private static final long serialVersionUID = 123L;
     private String dateTime;
 
     public SavingsAccount() {

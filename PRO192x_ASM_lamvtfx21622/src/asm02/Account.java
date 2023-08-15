@@ -14,6 +14,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class Account implements Serializable {
+    private static final long serialVersionUID = 123L;
     private String accountNumber;
     private double balance;
     private List<Transaction> transactions;

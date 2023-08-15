@@ -25,8 +25,6 @@ public class TextFileService {
         }
     }
 
-
-
     // Đọc dữ liệu object file
     public static <T> List<T> readFile(String filepath) {
         List<T> objects = new ArrayList<>();
@@ -49,5 +47,21 @@ public class TextFileService {
             System.out.println("ClassNotFoundException " + e.getMessage());
         }
         return objects;
+    }
+
+    //Kiểm tra filepath
+    public static boolean checkFilePath(String filepath){
+        File file = new File(filepath);
+        if(!file.isFile()){
+            // là file return true
+            System.out.println("File không tồn tại, vui lòng thử lại!");
+            return false;
+        }
+        else if (file.length() == 0) {
+            //file not empty -> có data -> return true
+            System.out.println("File không có dữ liệu, vui lòng thử lại");
+            return false;
+        }
+        return true;
     }
 }

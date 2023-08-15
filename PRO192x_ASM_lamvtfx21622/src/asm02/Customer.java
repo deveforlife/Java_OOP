@@ -8,6 +8,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Customer extends User implements Serializable {
+    private static final long serialVersionUID = 123L;
+
     private List<Account> accounts;
 
     private static Scanner sc = new Scanner(System.in);

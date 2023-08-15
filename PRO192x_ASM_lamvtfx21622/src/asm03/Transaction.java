@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class Transaction implements Serializable {
+    private static final long serialVersionUID = 123L;
     private String id;
     private String accountNumber;
     private double amount;
