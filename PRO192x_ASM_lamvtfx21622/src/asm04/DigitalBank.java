@@ -53,10 +53,12 @@ public class DigitalBank extends asm03.DigitalBank {
                 String getString[] = line.split(",");
                 Customer customer = new Customer();
                 customer.setCustomerId(getString[0]);
-                customer.setName(getString[1]);
+                customer.setName(getString[1].replaceAll("\\s\\s+", " ").trim());
 
-                newListCus.add(customer);
-
+                if (customer.getCustomerId().matches("^[0-9]{12}$")
+                        && customer.getName().isBlank() && customer.getName() != null){
+                    newListCus.add(customer);
+                }
             }
         }catch (Exception e){
 
