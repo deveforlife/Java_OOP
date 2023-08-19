@@ -51,12 +51,12 @@ public class DigitalBank extends asm03.DigitalBank {
                     break;
                 }
                 String getString[] = line.split(",");
-                Customer customer = new Customer();
-                customer.setCustomerId(getString[0]);
-                customer.setName(getString[1].replaceAll("\\s\\s+", " ").trim());
-
-                if (customer.getCustomerId().matches("^[0-9]{12}$")
-                        && customer.getName().isBlank() && customer.getName() != null){
+                getString[1] = getString[1].replaceAll("\\s\\s+", " ").trim();
+                if (getString[0].matches("^[0-9]{12}$") && !getString[1].isBlank()
+                        && getString[1].contains(" ") && getString[1].matches("^[a-zA-Z ]{0,30}$")){
+                    Customer customer = new Customer();
+                    customer.setCustomerId(getString[0]);
+                    customer.setName(getString[1]);
                     newListCus.add(customer);
                 }
             }
@@ -67,6 +67,7 @@ public class DigitalBank extends asm03.DigitalBank {
         //kiểm tra list, gộp list
         if (getCusFromFile.size() == 0) {
 
+            // lấy các object duy nhất
             List<Customer> uniqueCus = newListCus.stream()
                     .filter(distinctByKey(Customer::getCustomerId))
                     .collect(Collectors.toList());
@@ -103,10 +104,7 @@ public class DigitalBank extends asm03.DigitalBank {
 
     //thêm tài khoản atm
     public void creatAccountAtm(){
-
-
         String inputCCCD = typeCCCD();
-
         if (getCustomerById(customersList,inputCCCD) != null){
             getCustomerById(customersList,inputCCCD).displayInformation04();
 
@@ -172,35 +170,40 @@ public class DigitalBank extends asm03.DigitalBank {
             if (sourceAccount != null){
                 System.out.print("Nhập số tiền: ");
                 double amount = scanner.nextDouble();
-                scanner.nextLine();
+                scanner.nextLine(); // taại sao khi nhập string thì không giữ enter
                 switch (type){
                     case "deposit":
-                        ((SavingsAccount) sourceAccount).deposit(amount);
-                        ((SavingsAccount) sourceAccount).log(amount);
-                        AccountDao.update(sourceAccount);
-                        ((SavingsAccount) sourceAccount).saveTransaction(numberAccount,amount,type,TransactionDao.list());
+                        if (((SavingsAccount) sourceAccount).deposit(amount)){
+                            ((SavingsAccount) sourceAccount).log(amount);
+                            AccountDao.update(sourceAccount);
+                            ((SavingsAccount) sourceAccount).saveTransaction(numberAccount,amount,type,TransactionDao.list());
+                        }
+                        else System.out.println("Số tiền nộp không hợp lệ!");
+
                         break;
                     case "withdraw":
-                        ((SavingsAccount) sourceAccount).withdraw(amount);
-                        ((SavingsAccount) sourceAccount).log(amount);
-                        AccountDao.update(sourceAccount);
-                        ((SavingsAccount) sourceAccount).saveTransaction(numberAccount,-amount,type,TransactionDao.list());
+                        if (((SavingsAccount) sourceAccount).withdraw(amount)){
+                            ((SavingsAccount) sourceAccount).log(amount);
+                            AccountDao.update(sourceAccount);
+                            ((SavingsAccount) sourceAccount).saveTransaction(numberAccount,-amount,type,TransactionDao.list());
+                        }
                         break;
                     case "transfer":
                         Account receivedAccount = new Account();
                         System.out.print("Nhập số tài khoản nhận tiền: ");
                         String receivedAccountNumber = typeAccountNumber();
-                        if (isAccountExisted(accountList,receivedAccountNumber)){
+                        if (isAccountExisted(receivedAccountNumber)){
                             showCustombyAccountNumber(receivedAccountNumber);
                             System.out.print("Xác nhận chuyển tiền (Y/N): ");
                             String comfirm = scanner.nextLine();
                             while (true) {
                                 if (comfirm.toUpperCase().equals("Y")){
                                     //trừ tiền trong tài khoản nguồn + update số dư
-                                    ((SavingsAccount) sourceAccount).withdraw(amount);
-                                    ((SavingsAccount) sourceAccount).log(amount,type,receivedAccountNumber);
-                                    AccountDao.update(sourceAccount);
-                                    ((SavingsAccount) sourceAccount).saveTransaction(numberAccount,-amount,type,TransactionDao.list());
+                                    if (((SavingsAccount) sourceAccount).withdraw(amount)){
+                                        ((SavingsAccount) sourceAccount).log(amount,type,receivedAccountNumber);
+                                        AccountDao.update(sourceAccount);
+                                        ((SavingsAccount) sourceAccount).saveTransaction(numberAccount,-amount,type,TransactionDao.list());
+                                    }
 
                                     //Cộng tiền tài khoản nhận
                                     for (int i = 0; i < accountList.size();i++){
@@ -209,9 +212,11 @@ public class DigitalBank extends asm03.DigitalBank {
                                             break;
                                         }
                                     }
-                                    ((SavingsAccount) receivedAccount).deposit(amount);
-                                    AccountDao.update(receivedAccount);
-                                    ((SavingsAccount) receivedAccount).saveTransaction(receivedAccountNumber,amount,type,TransactionDao.list());
+                                    if (((SavingsAccount) receivedAccount).deposit(amount)) {
+                                        AccountDao.update(receivedAccount);
+                                        ((SavingsAccount) receivedAccount).
+                                                saveTransaction(receivedAccountNumber,amount,type,TransactionDao.list());
+                                    }
                                     break;
                                 }
                                 else if (comfirm.toUpperCase().equals("N")) {
@@ -241,16 +246,18 @@ public class DigitalBank extends asm03.DigitalBank {
             // Nhập stk cần show lịch sử
             System.out.print("Nhập số tài khoản: ");
             String accountNumber = typeAccountNumber();
-            for (Account account : accountList){
-                if (account.getAccountNumber().equals(accountNumber)){
-                    ((SavingsAccount) account).showTransactionHistory(account.getTransactions(accountNumber));
+            if (!isAccountExisted(accountNumber))
+                System.out.println("Số tài khoản không tồn tại.");
+            else {
+                for (Account account : accountList){
+                    if (account.getAccountNumber().equals(accountNumber)){
+                        ((SavingsAccount) account).
+                                showTransactionHistory(account.getTransactions(accountNumber));
+                    }
                 }
-                else System.out.println("Số tài khoản không tồn tại.");
             }
         }
         else System.out.println("Không tồn tại khách hàng có CCCD "+inputCCCD);
-
-
     }
 
     //kiểm tra customer
@@ -264,9 +271,9 @@ public class DigitalBank extends asm03.DigitalBank {
     }
 
     //kiểm tra account
-    private boolean isAccountExisted(List<Account> accounts, String cccd){
-        for (Account account : accounts) {
-            if (account.getAccountNumber().equals(cccd)){
+    private boolean isAccountExisted(String accountNumber){
+        for (Account account : accountList) {
+            if (account.getAccountNumber().equals(accountNumber)){
                 return true;
             }
         }
@@ -275,7 +282,7 @@ public class DigitalBank extends asm03.DigitalBank {
 
     private boolean isAccountExisted(List<Account> accounts, Account newAccount){
         for (Account account : accounts) {
-            if (account.getAccountNumber().equals(newAccount.getCustomerID())){
+            if (account.getAccountNumber().equals(newAccount.getAccountNumber())){
                 return true;
             }
         }

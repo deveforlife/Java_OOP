@@ -49,10 +49,7 @@ public class SavingsAccount extends Account implements Withdraw, Report, IReport
             dateTime = getDateTime();
             return true;
         }
-        else {
-            System.out.println("Số tiền nộp không hợp lệ!");
             return false;
-        }
     }
 
     // rút tiền
@@ -151,7 +148,7 @@ public class SavingsAccount extends Account implements Withdraw, Report, IReport
         else {
             for (int i = transactionList.size()-1; i >= 0; i--){
                 System.out.printf("[GD] %5s",transactionList.get(i).getAccountNumber());
-                System.out.printf(" | %15s",transactionList.get(i).getType());
+                System.out.printf(" | %5s",transactionList.get(i).getType());
                 System.out.printf(" | %15s",formatCurrency(transactionList.get(i).getAmount()));
                 System.out.printf(" | %25s%n",transactionList.get(i).getDateTime());
             }
